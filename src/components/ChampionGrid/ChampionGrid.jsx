@@ -6,11 +6,10 @@ import styles from './ChampionGrid.module.css'
 
 const ALL_TAGS = ['Fighter', 'Tank', 'Mage', 'Assassin', 'Marksman', 'Support']
 
-// Outer wrapper — fades the whole grid in/out when navigating to a champion
 const gridVariants = {
-  visible: { opacity: 1, scale: 1,    transition: { duration: 0.32, ease: [0.22, 1, 0.36, 1] } },
-  hidden:  { opacity: 0, scale: 0.98 },
-  exit:    { opacity: 0, scale: 0.98, transition: { duration: 0.2,  ease: [0.55, 0, 1, 0.45] } },
+  visible: { opacity: 1, transition: { duration: 0.32, ease: [0.22, 1, 0.36, 1] } },
+  hidden:  { opacity: 0 },
+  exit:    { opacity: 0, transition: { duration: 0.2,  ease: [0.55, 0, 1, 0.45] } },
 }
 
 /**
@@ -23,16 +22,35 @@ const gridVariants = {
 export default function ChampionGrid({ champions, version, onSelectChampion }) {
   const [search, setSearch] = useState('')
   const [activeTag, setActiveTag] = useState(null)
+  const [sortBy, setSortBy] = useState('alpha')
   const [gridReady, setGridReady] = useState(false)
   const [loadedCount, setLoadedCount] = useState(0)
 
   const filtered = useMemo(() => {
-    return champions.filter(c => {
-      const matchesSearch = c.name.toLowerCase().includes(search.toLowerCase())
+    const q = search.trim().toLowerCase()
+    let list = champions.filter(c => {
+      const matchesSearch =
+        !q ||
+        c.name.toLowerCase().includes(q) ||
+        c.title?.toLowerCase().includes(q)
       const matchesTag = !activeTag || c.tags.includes(activeTag)
       return matchesSearch && matchesTag
     })
-  }, [champions, search, activeTag])
+    if (sortBy === 'alpha') {
+      list = list.slice().sort((a, b) => a.name.localeCompare(b.name))
+    } else if (sortBy === 'role') {
+      list = list.slice().sort(
+        (a, b) => a.tags[0].localeCompare(b.tags[0]) || a.name.localeCompare(b.name)
+      )
+    }
+    return list
+  }, [champions, search, activeTag, sortBy])
+
+  const tagCounts = useMemo(() => {
+    const out = { All: champions.length }
+    ALL_TAGS.forEach(t => { out[t] = champions.filter(c => c.tags.includes(t)).length })
+    return out
+  }, [champions])
 
   // Preload all champion icon images before revealing the grid
   useEffect(() => {
@@ -44,7 +62,6 @@ export default function ChampionGrid({ champions, version, onSelectChampion }) {
     let cancelled = false
     let done = 0
     const total = champions.length
-    // Update progress roughly every 10% to limit re-renders
     const step = Math.max(1, Math.floor(total / 10))
 
     champions.forEach(champion => {
@@ -67,24 +84,28 @@ export default function ChampionGrid({ champions, version, onSelectChampion }) {
     : 0
 
   return (
-    <motion.div
+    <motion.main
       className={styles.wrapper}
       variants={gridVariants}
       initial="hidden"
       animate="visible"
       exit="exit"
     >
-      {/* Header */}
+      {/* ── Editorial header ──────────────────────────── */}
       <div className={styles.header}>
+        <p className={styles.eyebrow}>The champion library</p>
         <h1 className={styles.title}>
-          <span className={styles.titleAccent}>League</span> of Legends
+          Every <em>champion</em>,<br /> every matchup,<br /> every match.
         </h1>
-        <p className={styles.subtitle}>Select a Champion</p>
+        <p className={styles.sub}>
+          Browse abilities, win rates and recent pro play for the full roster.
+          Use search, role filters or sort to narrow things down.
+        </p>
       </div>
 
-      {/* Controls — always visible */}
+      {/* ── Controls (search + sort) ─────────────────── */}
       <div className={styles.controls}>
-        <div className={styles.searchWrapper}>
+        <div className={styles.searchWrap}>
           <svg className={styles.searchIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <circle cx="11" cy="11" r="8" />
             <path d="M21 21l-4.35-4.35" />
@@ -92,44 +113,66 @@ export default function ChampionGrid({ champions, version, onSelectChampion }) {
           <input
             type="text"
             className={styles.searchInput}
-            placeholder="Search champion..."
+            placeholder="Search by name or title…"
             value={search}
             onChange={e => setSearch(e.target.value)}
             aria-label="Search champions"
           />
-          {search && (
-            <button
-              className={styles.clearBtn}
+          {search ? (
+            <kbd
+              className={`${styles.kbd} ${styles.kbdClear}`}
               onClick={() => setSearch('')}
+              role="button"
               aria-label="Clear search"
             >
-              ×
-            </button>
+              Clear
+            </kbd>
+          ) : (
+            <kbd className={styles.kbd}>⌘ K</kbd>
           )}
         </div>
 
-        <div className={styles.tagFilters} role="group" aria-label="Filter by role">
-          <button
-            className={`${styles.tagBtn} ${!activeTag ? styles.tagActive : ''}`}
-            onClick={() => setActiveTag(null)}
+        <div className={styles.sortWrap}>
+          <select
+            className={styles.sortSelect}
+            value={sortBy}
+            onChange={e => setSortBy(e.target.value)}
+            aria-label="Sort champions"
           >
-            All
-          </button>
-          {ALL_TAGS.map(tag => (
-            <button
-              key={tag}
-              className={`${styles.tagBtn} ${activeTag === tag ? styles.tagActive : ''}`}
-              onClick={() => setActiveTag(activeTag === tag ? null : tag)}
-            >
-              {tag}
-            </button>
-          ))}
+            <option value="alpha">Sort · A → Z</option>
+            <option value="role">Sort · by role</option>
+          </select>
         </div>
+      </div>
+
+      {/* ── Role tabs ────────────────────────────────── */}
+      <nav className={styles.tags} role="group" aria-label="Filter by role">
+        <button
+          className={`${styles.tagBtn} ${!activeTag ? styles.tagActive : ''}`}
+          onClick={() => setActiveTag(null)}
+        >
+          All <span className={styles.tagCount}>{tagCounts.All}</span>
+        </button>
+        {ALL_TAGS.map(tag => (
+          <button
+            key={tag}
+            className={`${styles.tagBtn} ${activeTag === tag ? styles.tagActive : ''}`}
+            onClick={() => setActiveTag(activeTag === tag ? null : tag)}
+          >
+            {tag} <span className={styles.tagCount}>{tagCounts[tag]}</span>
+          </button>
+        ))}
+      </nav>
+
+      {/* ── Meta row ─────────────────────────────────── */}
+      <div className={styles.metaRow}>
+        <span>Showing {filtered.length} / {champions.length}</span>
+        <span>{activeTag ?? 'All roles'}</span>
       </div>
 
       <AnimatePresence mode="wait">
         {!gridReady ? (
-          /* ── Skeleton loading state ──────────────────────── */
+          /* ── Skeleton state ──────────────────────────── */
           <motion.div
             key="loading"
             initial={{ opacity: 0 }}
@@ -153,44 +196,35 @@ export default function ChampionGrid({ champions, version, onSelectChampion }) {
               {filtered.map((_, i) => (
                 <div
                   key={i}
-                  className={styles.skeletonIcon}
+                  className={styles.skeletonCard}
                   style={{ animationDelay: `${(i % 16) * 0.05}s` }}
                 />
               ))}
             </div>
           </motion.div>
 
+        ) : filtered.length === 0 ? (
+          <div className={styles.empty}>No champions match your filters.</div>
         ) : (
-          /* ── Real grid — all icons appear at once ────────── */
           <motion.div
             key="content"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.3 }}
+            className={styles.grid}
           >
-            <p className={styles.count}>
-              {filtered.length} champion{filtered.length !== 1 ? 's' : ''}
-            </p>
-
-            {/* motion.div propagates "hidden"→"visible" to ChampionIcon without stagger */}
-            <motion.div
-              className={styles.grid}
-              initial="hidden"
-              animate="visible"
-              variants={{ hidden: {}, visible: {} }}
-            >
-              {filtered.map(champion => (
-                <ChampionIcon
-                  key={champion.id}
-                  champion={champion}
-                  version={version}
-                  onClick={() => onSelectChampion(champion.id, champion.name)}
-                />
-              ))}
-            </motion.div>
+            {filtered.map((champion, i) => (
+              <ChampionIcon
+                key={champion.id}
+                champion={champion}
+                version={version}
+                index={i}
+                onClick={() => onSelectChampion(champion.id, champion.name)}
+              />
+            ))}
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.div>
+    </motion.main>
   )
 }

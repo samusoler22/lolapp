@@ -1,9 +1,22 @@
+/* ── App shell ──────────────────────────── */
 .app {
   position: relative;
   min-height: 100vh;
+  background:
+    radial-gradient(1200px 600px at 80% -200px, rgba(255, 106, 26, 0.06), transparent 60%),
+    radial-gradient(900px 500px at -10% 60%, rgba(232, 196, 122, 0.04), transparent 60%);
 }
 
-/* ── Full-page loader ───────────────────── */
+.app::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.012) 1px, transparent 1px);
+  background-size: 4px 4px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Full-page loader ──────────────────── */
 .fullLoader {
   position: fixed;
   inset: 0;
@@ -21,41 +34,37 @@
 }
 
 .loaderSpinner {
-  width: 40px;
-  height: 40px;
-  border: 2px solid rgba(255, 77, 0, 0.18);
-  border-top-color: var(--color-gold);
+  width: 36px;
+  height: 36px;
+  border: 1.5px solid rgba(255, 255, 255, 0.06);
+  border-top-color: var(--accent);
   border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
+  animation: spin 0.9s linear infinite;
 }
 
 .loaderText {
-  font-family: var(--font-display);
+  font-family: var(--font-mono);
   font-size: 0.72rem;
   font-weight: 500;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--color-text-dim);
-  animation: ambientBreath 2s ease infinite;
+  color: var(--text-mute);
+  animation: ambientBreath 2.4s ease infinite;
 }
 
 .loaderBar {
-  width: 160px;
+  width: 180px;
   height: 1px;
-  background: rgba(255, 77, 0, 0.12);
+  background: rgba(255, 255, 255, 0.06);
   border-radius: 1px;
   overflow: hidden;
 }
 
 .loaderBarFill {
   height: 100%;
-  background: var(--color-gold);
+  background: var(--accent);
   border-radius: 1px;
-  animation: loaderSweep 1.4s ease-in-out infinite;
+  animation: loaderSweep 1.6s ease-in-out infinite;
 }
 
 @keyframes loaderSweep {
@@ -64,7 +73,7 @@
   100% { width: 0%;  margin-left: 100%; }
 }
 
-/* ── Error state ────────────────────────── */
+/* ── Error state ───────────────────────── */
 .errorState {
   position: fixed;
   inset: 0;
@@ -77,33 +86,35 @@
 }
 
 .errorTitle {
-  font-family: var(--font-display);
-  font-size: 1.3rem;
-  font-weight: 600;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.8rem;
+  font-weight: 400;
   color: var(--color-loss);
+  letter-spacing: -0.01em;
 }
 
 .errorMsg {
   color: var(--color-text-dim);
-  font-size: 0.85rem;
+  font-size: 0.92rem;
 }
 
 .retryBtn {
   padding: var(--space-3) var(--space-6);
-  background: rgba(255, 77, 0, 0.08);
-  border: 1px solid rgba(255, 77, 0, 0.28);
+  background: transparent;
+  border: 1px solid var(--border-mid);
   border-radius: var(--radius-md);
-  color: var(--color-gold);
+  color: var(--color-text);
   font-family: var(--font-display);
-  font-size: 0.82rem;
+  font-size: 0.85rem;
   font-weight: 500;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.04em;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .retryBtn:hover {
-  background: rgba(255, 77, 0, 0.16);
-  border-color: var(--color-gold);
-  box-shadow: 0 0 16px rgba(255, 77, 0, 0.18);
+  background: var(--accent-faint);
+  border-color: var(--accent-dim);
+  color: var(--accent);
 }

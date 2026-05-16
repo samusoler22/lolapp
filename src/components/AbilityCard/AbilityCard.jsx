@@ -1,53 +1,41 @@
-import { stripHtml } from '../../utils/htmlStripper.js'
 import styles from './AbilityCard.module.css'
 
 /**
+ * Header-style ability card. The expanded description lives in AbilityPanel
+ * as a single rich detail block, not inline — keeps the row tidy.
+ *
  * @param {{
- *   label: string,       'Passive' | 'Q' | 'W' | 'E' | 'R'
- *   name: string,
- *   description: string,
+ *   slot:    string,    'Passive' | 'Q' | 'W' | 'E' | 'R'
+ *   name:    string,
+ *   cap:     string,    e.g. "Ultimate · R"
  *   imageUrl: string,
  *   isActive: boolean,
  *   onClick: () => void
  * }} props
  */
-export default function AbilityCard({
-  label,
-  name,
-  description,
-  imageUrl,
-  isActive,
-  onClick,
-}) {
-  const cleanDesc = stripHtml(description)
+export default function AbilityCard({ slot, name, cap, imageUrl, isActive, onClick }) {
+  const slotLabel = slot === 'Passive' ? 'P' : slot
 
   return (
-    <div className={styles.wrapper}>
-      <button
-        className={`${styles.card} ${isActive ? styles.active : ''}`}
-        onClick={onClick}
-        aria-pressed={isActive}
-        title={name}
-      >
-        <div className={styles.iconWrapper}>
-          <img
-            src={imageUrl}
-            alt={`${name} icon`}
-            className={styles.icon}
-            loading="lazy"
-            draggable={false}
-          />
-          <div className={styles.iconOverlay} />
-        </div>
-        <span className={styles.label}>{label}</span>
-        <span className={styles.name}>{name}</span>
-      </button>
-
-      <div className={`${styles.description} ${isActive ? styles.descriptionOpen : ''}`}>
-        <div className={styles.descriptionInner}>
-          <p className={styles.descText}>{cleanDesc}</p>
-        </div>
+    <button
+      className={`${styles.card} ${isActive ? styles.active : ''}`}
+      onClick={onClick}
+      aria-pressed={isActive}
+      title={name}
+    >
+      <span className={styles.slot}>{slotLabel}</span>
+      <div className={styles.iconWrap}>
+        <img
+          src={imageUrl}
+          alt={`${name} icon`}
+          className={styles.icon}
+          loading="lazy"
+          draggable={false}
+        />
+        <div className={styles.iconOverlay} />
       </div>
-    </div>
+      <span className={styles.name}>{name}</span>
+      <span className={styles.cap}>{cap}</span>
+    </button>
   )
 }

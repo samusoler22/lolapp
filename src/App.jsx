@@ -3,7 +3,7 @@ import { AnimatePresence } from 'framer-motion'
 import { useChampions } from './hooks/useChampions.js'
 import { fetchAllItems } from './services/dataDragon.js'
 import { buildItemIndex } from './utils/itemNormalizer.js'
-import ParticleBackground from './components/ParticleBackground/ParticleBackground.jsx'
+import AppBar from './components/AppBar/AppBar.jsx'
 import ChampionGrid from './components/ChampionGrid/ChampionGrid.jsx'
 import ChampionDetail from './components/ChampionDetail/ChampionDetail.jsx'
 import styles from './App.module.css'
@@ -24,8 +24,8 @@ export default function App() {
   // Update page title
   useEffect(() => {
     document.title = selectedChampion
-      ? `${selectedChampion.name} — LoL Explorer`
-      : 'LoL Champion Explorer'
+      ? `${selectedChampion.name} — League Codex`
+      : 'League Codex'
   }, [selectedChampion])
 
   const handleSelectChampion = (id, name) => {
@@ -41,14 +41,20 @@ export default function App() {
 
   return (
     <div className={styles.app}>
-      <ParticleBackground />
+      {/* Sticky top bar — shows back button when a champion is selected */}
+      <AppBar
+        version={version}
+        championCount={champions?.length}
+        selectedName={selectedChampion?.name}
+        onBack={selectedChampion ? handleBack : null}
+      />
 
       {/* Loading state */}
       {loading && (
         <div className={styles.fullLoader}>
           <div className={styles.loaderInner}>
             <div className={styles.loaderSpinner} />
-            <p className={styles.loaderText}>Loading Champions</p>
+            <p className={styles.loaderText}>Loading champions</p>
             <div className={styles.loaderBar}>
               <div className={styles.loaderBarFill} />
             </div>

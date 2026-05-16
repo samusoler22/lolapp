@@ -1,81 +1,139 @@
-.iconBtn {
+.card {
+  position: relative;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: var(--space-1);
-  background: none;
-  border: none;
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
   cursor: pointer;
-  padding: var(--space-1);
-  border-radius: var(--radius-sm);
-  position: relative;
+  text-align: left;
+  width: 100%;
+  padding: 0;
+  transition: border-color 0.2s ease, background 0.2s ease;
   -webkit-tap-highlight-color: transparent;
 }
 
-.iconWrapper {
+.card:hover {
+  border-color: var(--border-strong);
+  background: var(--bg-elev-2);
+}
+
+.card:hover .cta {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ── Art region ──────────────────────────── */
+.art {
   position: relative;
-  width: 56px;
-  height: 56px;
-  border-radius: var(--radius-sm);
+  aspect-ratio: 4 / 5;
+  background: var(--bg-elev-2);
   overflow: hidden;
-  border: 1px solid rgba(255, 77, 0, 0.18);
-  transition: border-color 0.2s ease;
 }
 
-.iconBtn:hover .iconWrapper {
-  border-color: var(--color-gold);
-  animation: glowPulse 1.5s ease-in-out infinite;
+.art::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(10, 13, 17, 0.9) 0%, transparent 50%);
 }
 
-.icon {
+.image {
+  /* Cover the full card art region — Data Dragon icons are square so they
+     get cropped on top/bottom, which reads cleanly in a portrait card. */
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.25s var(--ease-smooth), filter 0.25s ease;
+  object-position: center 20%;
+  transition: transform 0.5s var(--ease-smooth), filter 0.3s ease;
 }
 
-.iconBtn:hover .icon {
-  transform: scale(1.08);
-  filter: brightness(1.15) saturate(1.2);
+.card:hover .image {
+  transform: scale(1.04);
+  filter: brightness(1.05);
 }
 
-.glow {
+.indexTag {
   position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 77, 0, 0.1) 0%,
-    transparent 60%
-  );
-  opacity: 0;
-  transition: opacity 0.2s ease;
+  top: var(--space-2);
+  left: var(--space-3);
+  z-index: 1;
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  color: var(--text-mute);
+  letter-spacing: 0.06em;
 }
 
-.iconBtn:hover .glow {
-  opacity: 1;
+.cta {
+  position: absolute;
+  top: var(--space-2);
+  right: var(--space-3);
+  z-index: 1;
+  padding: 3px 7px;
+  background: var(--accent);
+  color: var(--color-black);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0;
+  transform: translateX(6px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+/* ── Body ────────────────────────────────── */
+.body {
+  padding: var(--space-2) var(--space-3) var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
 .name {
-  font-family: var(--font-display);
-  font-size: 9px;
+  font-family: var(--font-serif);
+  font-style: italic;
   font-weight: 600;
-  color: var(--color-text-dim);
-  text-align: center;
-  max-width: 60px;
+  font-size: 1.05rem;
+  line-height: 1.1;
+  letter-spacing: 0.005em;
+  color: var(--color-text);
+}
+
+.title {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-bottom: var(--space-2);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  transition: color 0.2s ease;
-  letter-spacing: 0.3px;
 }
 
-.iconBtn:hover .name {
-  color: var(--color-gold);
+.tags {
+  display: flex;
+  gap: var(--space-1);
+  flex-wrap: wrap;
+}
+
+.tag {
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--color-text-dim);
+  padding: 1px 6px;
+  border: 1px solid var(--border-mid);
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.02);
 }
 
 @media (max-width: 480px) {
-  .iconWrapper {
-    width: 46px;
-    height: 46px;
-  }
+  .body { padding: var(--space-2) var(--space-3) var(--space-3); }
+  .name { font-size: 0.95rem; }
 }

@@ -19,14 +19,18 @@ function champNameToId(name) {
   return LEAGUEPEDIA_TO_DD[name] ?? name.replace(/[^A-Za-z0-9]/g, '')
 }
 
-const cardVariants = {
-  hidden:  { opacity: 0, x: -20 },
-  visible: { opacity: 1, x: 0, transition: { type: 'spring', stiffness: 220, damping: 26 } },
+const rowVariants = {
+  hidden:  { opacity: 0, y: 8 },
+  visible: i => ({
+    opacity: 1,
+    y: 0,
+    transition: { type: 'tween', ease: [0.22, 1, 0.36, 1], duration: 0.35, delay: Math.min(i * 0.05, 0.3) },
+  }),
 }
 
 const RESULT_LABELS = {
-  win:    'Victory',
-  loss:   'Defeat',
+  win:    'Win',
+  loss:   'Loss',
   remake: 'Remake',
 }
 
@@ -38,14 +42,9 @@ function formatDate(dateStr) {
   if (!dateStr) return 'Unknown date'
   const d = new Date(dateStr.replace(' ', 'T') + 'Z')
   if (isNaN(d.getTime())) return dateStr
-  return d.toLocaleDateString('en-US', {
-    year: 'numeric', month: 'short', day: 'numeric',
-  })
+  return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
 }
 
-/**
- * Handles both MM:SS strings and decimal-minutes floats from Leaguepedia.
- */
 function formatDuration(raw) {
   if (!raw) return ''
   const s = String(raw).trim()
@@ -63,6 +62,9 @@ function cleanPlayerName(link) {
 }
 
 /**
+ * Table row representation of a pro match. Slots in as a grid row inside
+ * ProMatchList's <pm-table> container.
+ *
  * @param {{
  *   match: object,
  *   version: string,
@@ -71,78 +73,74 @@ function cleanPlayerName(link) {
  * }} props
  */
 export default function MatchCard({ match, version, itemIndex, index }) {
-  const { result, kills, deaths, assists, items, date, duration, tournament, playerName, team, role, opponentChampion } = match
+  const {
+    result, kills, deaths, assists, items,
+    date, duration, tournament,
+    playerName, team, role, opponentChampion,
+  } = match
   const playerDisplay = cleanPlayerName(playerName)
   const durationDisplay = formatDuration(duration)
-
-  // Pad items to always show 6 slots
   const itemSlots = [...items.slice(0, 6), ...Array(Math.max(0, 6 - items.length)).fill(null)]
+  const oppId = opponentChampion ? champNameToId(opponentChampion) : null
 
   return (
     <motion.div
-      className={`${styles.card} ${styles[result]}`}
-      variants={cardVariants}
+      className={styles.row}
+      variants={rowVariants}
       initial="hidden"
       animate="visible"
       custom={index}
     >
-      {/* Left: player info + meta */}
-      <div className={styles.info}>
-        <div className={styles.player}>
-          <span className={`${styles.badge} ${styles[`badge_${result}`]}`}>
-            {RESULT_LABELS[result]}
-          </span>
-          <span className={styles.playerName}>{playerDisplay}</span>
-          {role && <span className={styles.roleBadge}>{ROLE_ABBR[role] ?? role}</span>}
-          {team && <span className={styles.team}>{team}</span>}
-        </div>
-        <div className={styles.meta}>
-          <span className={styles.date}>{formatDate(date)}</span>
-          {durationDisplay && <span className={styles.duration}>{durationDisplay}</span>}
-          {tournament && (
-            <span className={styles.tournament} title={tournament}>
-              {tournament.length > 30 ? tournament.slice(0, 28) + '…' : tournament}
-            </span>
-          )}
-        </div>
+      {/* Col 1 — Result */}
+      <div className={`${styles.result} ${styles[result]}`}>
+        <span className={styles.resultBar} />
+        {RESULT_LABELS[result]}
       </div>
 
-      {/* Opponent champion */}
-      {opponentChampion && (() => {
-        const ddId = champNameToId(opponentChampion)
-        return ddId ? (
-          <div className={styles.vsSection}>
-            <span className={styles.vsLabel}>vs</span>
-            <img
-              src={getChampionIconUrl(version, `${ddId}.png`)}
-              alt={opponentChampion}
-              title={opponentChampion}
-              className={styles.vsIcon}
-              draggable={false}
-              onError={e => { e.currentTarget.style.display = 'none' }}
-            />
-          </div>
-        ) : null
-      })()}
-
-      {/* Center: K/D/A */}
-      <div className={styles.kda}>
-        <div className={styles.kdaScore}>
-          <span className={styles.kills}>{kills}</span>
-          <span className={styles.slash}>/</span>
-          <span className={styles.deaths}>{deaths}</span>
-          <span className={styles.slash}>/</span>
-          <span className={styles.assists}>{assists}</span>
+      {/* Col 2 — Player */}
+      <div className={styles.player}>
+        <div className={styles.playerHead}>
+          <span className={styles.playerName}>{playerDisplay}</span>
+          {role && <span className={styles.rolePill}>{ROLE_ABBR[role] ?? role}</span>}
+          {team && <span className={styles.team}>{team}</span>}
         </div>
-        <div className={styles.kdaLabel}>K / D / A</div>
-        {deaths > 0 && (
-          <div className={styles.ratio}>
-            {((kills + assists) / deaths).toFixed(1)} KDA
-          </div>
+        <span className={styles.playerMeta}>
+          {formatDate(date)}
+          {durationDisplay && <> · {durationDisplay}</>}
+          {tournament && <> · {tournament.length > 30 ? tournament.slice(0, 28) + '…' : tournament}</>}
+        </span>
+      </div>
+
+      {/* Col 3 — Opponent */}
+      <div className={styles.vs}>
+        <span className={styles.vsLabel}>vs</span>
+        {oppId && (
+          <img
+            src={getChampionIconUrl(version, `${oppId}.png`)}
+            alt={opponentChampion}
+            title={opponentChampion}
+            className={styles.vsIcon}
+            draggable={false}
+            onError={e => { e.currentTarget.style.display = 'none' }}
+          />
         )}
       </div>
 
-      {/* Right: items */}
+      {/* Col 4 — KDA */}
+      <div className={styles.kda}>
+        <span className={styles.k}>{kills}</span>
+        <span className={styles.sep}>/</span>
+        <span className={styles.d}>{deaths}</span>
+        <span className={styles.sep}>/</span>
+        <span className={styles.a}>{assists}</span>
+        {deaths > 0 && (
+          <span className={styles.kdaRatio}>
+            {((kills + assists) / deaths).toFixed(2)}
+          </span>
+        )}
+      </div>
+
+      {/* Col 5 — Items */}
       <div className={styles.items}>
         {itemSlots.map((itemName, i) =>
           itemName ? (

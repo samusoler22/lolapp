@@ -9,9 +9,7 @@ import styles from './ChampionLore.module.css'
  */
 export default function ChampionLore({ lore, allytips, enemytips }) {
   return (
-    <section className={styles.section}>
-      <h2 className={styles.sectionTitle}>Lore</h2>
-
+    <>
       {lore && <p className={styles.loreText}>{lore}</p>}
 
       {(allytips?.length > 0 || enemytips?.length > 0) && (
@@ -20,7 +18,7 @@ export default function ChampionLore({ lore, allytips, enemytips }) {
             <div className={styles.tipGroup}>
               <h3 className={styles.tipTitle}>
                 <span className={styles.tipAlly}>▲</span>
-                Playing As
+                Playing as
               </h3>
               <ul className={styles.tipList}>
                 {allytips.map((tip, i) => (
@@ -34,7 +32,7 @@ export default function ChampionLore({ lore, allytips, enemytips }) {
             <div className={styles.tipGroup}>
               <h3 className={styles.tipTitle}>
                 <span className={styles.tipEnemy}>▼</span>
-                Playing Against
+                Playing against
               </h3>
               <ul className={styles.tipList}>
                 {enemytips.map((tip, i) => (
@@ -45,6 +43,6 @@ export default function ChampionLore({ lore, allytips, enemytips }) {
           )}
         </div>
       )}
-    </section>
+    </>
   )
 }

@@ -17,58 +17,64 @@ const ROLE_ABBR  = { Top: 'TOP', Jungle: 'JGL', Mid: 'MID', Bot: 'BOT', Support:
 export default function ProMatchList({ matches, loading, error, version, itemIndex }) {
   const [activeRole, setActiveRole] = useState('All')
 
-  // Detect which roles exist in the data, preserving canonical order
-  const availableRoles = ROLE_ORDER.filter(r => matches.some(m => m.role === r))
+  const availableRoles = ROLE_ORDER.filter(r => matches?.some(m => m.role === r))
 
-  // Filtered list: for a specific role show last 5; for 'All' show last 5 overall
-  const filtered = activeRole === 'All'
-    ? matches.slice(0, 5)
-    : matches.filter(m => m.role === activeRole).slice(0, 5)
+  const filtered = !matches
+    ? []
+    : activeRole === 'All'
+      ? matches.slice(0, 6)
+      : matches.filter(m => m.role === activeRole).slice(0, 6)
 
   return (
-    <section className={styles.section}>
-      <h2 className={styles.sectionTitle}>Pro Player Matches</h2>
-
-      {/* Role filter buttons — only shown when data is loaded */}
+    <>
+      {/* Controls */}
       {!loading && !error && availableRoles.length > 0 && (
-        <div className={styles.roleFilters}>
-          <button
-            className={`${styles.roleBtn} ${activeRole === 'All' ? styles.roleBtnActive : ''}`}
-            onClick={() => setActiveRole('All')}
-          >
-            All
-          </button>
-          {availableRoles.map(role => (
+        <div className={styles.controls}>
+          <div className={styles.roleTabs}>
             <button
-              key={role}
-              className={`${styles.roleBtn} ${activeRole === role ? styles.roleBtnActive : ''}`}
-              onClick={() => setActiveRole(role)}
+              className={`${styles.roleTab} ${activeRole === 'All' ? styles.roleTabActive : ''}`}
+              onClick={() => setActiveRole('All')}
             >
-              {ROLE_ABBR[role] ?? role}
+              All
             </button>
-          ))}
+            {availableRoles.map(role => (
+              <button
+                key={role}
+                className={`${styles.roleTab} ${activeRole === role ? styles.roleTabActive : ''}`}
+                onClick={() => setActiveRole(role)}
+              >
+                {ROLE_ABBR[role] ?? role}
+              </button>
+            ))}
+          </div>
+          <span className={styles.count}>
+            {filtered.length} of {matches.length} matches
+          </span>
         </div>
       )}
 
+      {/* Loading skeletons */}
       {loading && (
-        <div className={styles.skeletons}>
+        <div className={styles.table}>
           {Array.from({ length: 5 }, (_, i) => (
-            <div key={i} className={styles.skeletonCard} />
+            <div key={i} className={styles.skeletonRow} />
           ))}
         </div>
       )}
 
+      {/* Error */}
       {!loading && error && (
         <div className={styles.errorMsg}>
           <span>⚠</span>
           <span>
             Could not load pro matches.
-          <br />
-          <small style={{ opacity: 0.6, fontSize: '0.75em' }}>{error.message}</small>
+            <br />
+            <small style={{ opacity: 0.6, fontSize: '0.78em' }}>{error.message}</small>
           </span>
         </div>
       )}
 
+      {/* Empty */}
       {!loading && !error && filtered.length === 0 && (
         <div className={styles.empty}>
           {activeRole === 'All'
@@ -77,8 +83,16 @@ export default function ProMatchList({ matches, loading, error, version, itemInd
         </div>
       )}
 
-      {!loading && filtered.length > 0 && (
-        <div className={styles.list}>
+      {/* Table */}
+      {!loading && !error && filtered.length > 0 && (
+        <div className={styles.table}>
+          <div className={styles.header}>
+            <span>Result</span>
+            <span>Player</span>
+            <span>Opponent</span>
+            <span>KDA</span>
+            <span>Items</span>
+          </div>
           {filtered.map((match, i) => (
             <MatchCard
               key={`${match.playerName}-${match.date}-${i}`}
@@ -90,6 +104,6 @@ export default function ProMatchList({ matches, loading, error, version, itemInd
           ))}
         </div>
       )}
-    </section>
+    </>
   )
 }

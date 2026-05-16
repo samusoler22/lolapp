@@ -1,48 +1,28 @@
-.section {
-  margin-bottom: var(--space-12);
-}
-
-.sectionTitle {
-  font-family: var(--font-display);
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--color-gold);
-  margin-bottom: var(--space-5);
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-}
-
-.sectionTitle::before,
-.sectionTitle::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: linear-gradient(
-    to right,
-    transparent,
-    rgba(255, 77, 0, 0.25),
-    transparent
-  );
-}
-
-/* ── Lore text ───────────────────────────── */
 .loreText {
-  color: var(--color-text-dim);
-  font-size: 0.88rem;
-  line-height: 1.8;
+  font-family: var(--font-serif);
   font-style: italic;
-  padding: var(--space-5) var(--space-6);
-  background: var(--surface-1);
-  border: 1px solid var(--surface-border);
-  border-left: 3px solid rgba(255, 77, 0, 0.4);
-  border-radius: var(--radius-md);
-  margin-bottom: var(--space-5);
+  font-size: clamp(1.4rem, 2.4vw, 1.85rem);
+  line-height: 1.5;
+  color: var(--color-text);
+  letter-spacing: -0.005em;
+  padding: var(--space-4) 0 var(--space-8);
+  position: relative;
+  margin-bottom: var(--space-6);
 }
 
-/* ── Tips grid ───────────────────────────── */
+.loreText::before {
+  content: '“';
+  font-family: var(--font-serif);
+  font-size: 5rem;
+  color: var(--color-gold);
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  line-height: 1;
+  opacity: 0.5;
+}
+
+/* ── Tips ───────────────────────────────── */
 .tips {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -50,20 +30,19 @@
 }
 
 .tipGroup {
-  background: var(--surface-1);
-  border: 1px solid var(--surface-border);
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
   border-radius: var(--radius-md);
-  padding: var(--space-4) var(--space-5);
+  padding: var(--space-5);
 }
 
 .tipTitle {
-  font-family: var(--font-display);
-  font-size: 0.65rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--color-text-dim);
-  margin-bottom: var(--space-3);
+  margin-bottom: var(--space-4);
   display: flex;
   align-items: center;
   gap: var(--space-2);
@@ -78,18 +57,23 @@
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  gap: var(--space-3);
 }
 
 .tipItem {
-  font-size: 0.82rem;
+  font-size: 0.92rem;
   color: var(--color-text-dim);
-  line-height: 1.55;
-  padding-left: var(--space-3);
-  border-left: 2px solid rgba(255, 77, 0, 0.2);
+  line-height: 1.6;
+  display: flex;
+  gap: var(--space-3);
+}
+
+.tipItem::before {
+  content: '—';
+  color: var(--text-mute);
+  flex-shrink: 0;
 }
 
 @media (max-width: 640px) {
   .tips { grid-template-columns: 1fr; }
-  .loreText { padding: var(--space-4); }
 }

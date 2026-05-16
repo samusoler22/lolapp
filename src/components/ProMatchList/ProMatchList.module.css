@@ -1,114 +1,116 @@
-.section {
-  margin-bottom: var(--space-12);
+/* ── Controls ───────────────────────────── */
+.controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-4);
+  flex-wrap: wrap;
+  gap: var(--space-3);
 }
 
-.sectionTitle {
-  font-family: var(--font-display);
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--color-gold);
-  margin-bottom: var(--space-4);
+.roleTabs {
   display: flex;
+  gap: var(--space-1);
+  padding: 3px;
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+}
+
+.roleTab {
+  padding: 6px 12px;
+  border-radius: 5px;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.roleTab:hover {
+  color: var(--color-text);
+}
+
+.roleTabActive {
+  background: var(--color-text);
+  color: var(--color-black);
+}
+
+.count {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-mute);
+  letter-spacing: 0.06em;
+}
+
+/* ── Table ──────────────────────────────── */
+.table {
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.header {
+  display: grid;
+  grid-template-columns: 56px 1.8fr 0.9fr 0.9fr 1.4fr;
   align-items: center;
   gap: var(--space-3);
-}
-
-.sectionTitle::before,
-.sectionTitle::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: linear-gradient(
-    to right,
-    transparent,
-    rgba(255, 77, 0, 0.25),
-    transparent
-  );
-}
-
-/* ── Role filters ──────────────────────── */
-.roleFilters {
-  display: flex;
-  gap: var(--space-2);
-  flex-wrap: wrap;
-  margin-bottom: var(--space-4);
-}
-
-.roleBtn {
-  font-family: var(--font-display);
-  font-size: 0.62rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
+  padding: var(--space-3) var(--space-5);
+  background: rgba(255, 255, 255, 0.02);
+  border-bottom: 1px solid var(--border);
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  padding: 4px 10px;
-  border-radius: 3px;
-  border: 1px solid rgba(255, 77, 0, 0.2);
-  background: rgba(255, 77, 0, 0.05);
-  color: var(--color-text-dim);
-  cursor: pointer;
-  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  color: var(--text-mute);
 }
 
-.roleBtn:hover {
-  background: rgba(255, 77, 0, 0.12);
-  color: var(--color-gold);
-  border-color: rgba(255, 77, 0, 0.4);
+@media (max-width: 720px) {
+  .header { display: none; }
 }
 
-.roleBtnActive {
-  background: rgba(255, 77, 0, 0.18);
-  color: var(--color-gold);
-  border-color: rgba(255, 77, 0, 0.5);
-}
-
-.list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-}
-
-/* ── Error / Empty ─────────────────────── */
+/* ── Error / Empty ──────────────────────── */
 .errorMsg {
   display: flex;
   align-items: center;
   gap: var(--space-3);
   padding: var(--space-4) var(--space-5);
-  background: rgba(224, 82, 82, 0.08);
-  border: 1px solid rgba(224, 82, 82, 0.22);
+  background: var(--loss-soft);
+  border: 1px solid rgba(217, 119, 119, 0.22);
   border-radius: var(--radius-md);
-  color: #f87171;
-  font-size: 0.84rem;
+  color: var(--color-loss);
+  font-size: 0.86rem;
 }
 
 .empty {
-  padding: var(--space-5);
+  padding: var(--space-6);
   text-align: center;
-  color: var(--color-text-dim);
-  font-size: 0.84rem;
-  background: var(--surface-1);
-  border: 1px solid var(--surface-border);
+  color: var(--text-mute);
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.1rem;
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
   border-radius: var(--radius-md);
 }
 
-/* ── Skeletons ─────────────────────────── */
-.skeletons {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-}
-
-.skeletonCard {
-  height: 76px;
+/* ── Skeleton ───────────────────────────── */
+.skeletonRow {
+  height: 58px;
   background: linear-gradient(
     90deg,
-    rgba(255, 77, 0, 0.05) 25%,
-    rgba(255, 77, 0, 0.1)  50%,
-    rgba(255, 77, 0, 0.05) 75%
+    rgba(255, 255, 255, 0.02) 25%,
+    rgba(255, 255, 255, 0.05) 50%,
+    rgba(255, 255, 255, 0.02) 75%
   );
   background-size: 200% 100%;
   animation: shimmer 1.4s ease infinite;
-  border-radius: var(--radius-md);
-  border-left: 3px solid rgba(255, 77, 0, 0.15);
+  border-bottom: 1px solid var(--border);
+}
+
+.skeletonRow:last-child {
+  border-bottom: none;
 }
