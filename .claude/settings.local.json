@@ -1,0 +1,32 @@
+{
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  },
+  "permissions": {
+    "allow": [
+      "Bash(npm run:*)",
+      "WebSearch",
+      "WebFetch(domain:www.mediawiki.org)",
+      "WebFetch(domain:lol.fandom.com)",
+      "WebFetch(domain:github.com)",
+      "Bash(curl:*)",
+      "WebFetch(domain:lolalytics.com)",
+      "WebFetch(domain:ddragon.leagueoflegends.com)",
+      "WebFetch(domain:www.communitydragon.org)",
+      "WebFetch(domain:www.leagueoflegends.com)",
+      "WebFetch(domain:raw.communitydragon.org)",
+      "WebFetch(domain:tengge1.github.io)",
+      "WebFetch(domain:cdn.modelviewer.lol)",
+      "WebFetch(domain:modelviewer.lol)",
+      "WebFetch(domain:models.spriters-resource.com)",
+      "WebFetch(domain:developer.riotgames.com)",
+      "WebFetch(domain:www.freepublicapis.com)",
+      "WebFetch(domain:cdn.merakianalytics.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:a3.lolalytics.com)",
+      "WebFetch(domain:blitz.gg)",
+      "WebFetch(domain:www.modelviewer.lol)",
+      "Bash(do echo:*)"
+    ]
+  }
+}

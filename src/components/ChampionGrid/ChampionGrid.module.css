@@ -1,0 +1,218 @@
+.wrapper {
+  min-height: 100vh;
+  padding: var(--space-8) var(--space-6);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* ── Header ───────────────────────────────────────────────── */
+.header {
+  text-align: center;
+  margin-bottom: var(--space-8);
+  padding-top: var(--space-6);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--color-text);
+  line-height: 1.1;
+}
+
+.titleAccent {
+  color: var(--color-gold);
+}
+
+.subtitle {
+  font-family: var(--font-display);
+  font-size: clamp(0.7rem, 2vw, 0.85rem);
+  font-weight: 400;
+  color: var(--color-text-dim);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-top: var(--space-2);
+}
+
+/* ── Controls ─────────────────────────────────────────────── */
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.searchWrapper {
+  position: relative;
+  max-width: 400px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.searchIcon {
+  position: absolute;
+  left: var(--space-3);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  color: var(--color-text-dim);
+  pointer-events: none;
+}
+
+.searchInput {
+  width: 100%;
+  padding: var(--space-3) var(--space-4) var(--space-3) 40px;
+  background: var(--surface-1);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-lg);
+  color: var(--color-text);
+  font-size: 0.88rem;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.searchInput::placeholder {
+  color: var(--color-text-dim);
+}
+
+.searchInput:focus {
+  border-color: rgba(255, 77, 0, 0.5);
+  box-shadow: 0 0 0 3px rgba(255, 77, 0, 0.08);
+}
+
+.clearBtn {
+  position: absolute;
+  right: var(--space-3);
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--color-text-dim);
+  font-size: 1.1rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: 2px 4px;
+  transition: color 0.15s ease;
+}
+
+.clearBtn:hover {
+  color: var(--color-gold);
+}
+
+.tagFilters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  justify-content: center;
+}
+
+.tagBtn {
+  padding: var(--space-1) var(--space-3);
+  background: var(--surface-1);
+  border: 1px solid var(--surface-border);
+  border-radius: 20px;
+  color: var(--color-text-dim);
+  font-size: 0.76rem;
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tagBtn:hover {
+  border-color: var(--color-gold);
+  color: var(--color-gold);
+}
+
+.tagActive {
+  background: rgba(255, 77, 0, 0.18) !important;
+  border-color: var(--color-dark-cyan) !important;
+  color: var(--color-dark-cyan) !important;
+  box-shadow: 0 0 10px rgba(255, 77, 0, 0.2);
+}
+
+/* ── Count ────────────────────────────────────────────────── */
+.count {
+  text-align: center;
+  font-size: 0.72rem;
+  color: var(--color-text-dim);
+  margin-bottom: var(--space-4);
+  font-family: var(--font-display);
+  letter-spacing: 0.08em;
+}
+
+/* ── Grid ─────────────────────────────────────────────────── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(68px, 1fr));
+  gap: var(--space-2);
+  justify-items: center;
+}
+
+/* ── Loading progress ─────────────────────────────────────── */
+.loadingInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+}
+
+.loadingText {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-text-dim);
+}
+
+.progressBar {
+  width: 260px;
+  height: 2px;
+  background: rgba(255, 77, 0, 0.12);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(to right, rgba(255, 77, 0, 0.5), var(--color-gold));
+  border-radius: 999px;
+}
+
+.progressCount {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: rgba(200, 155, 60, 0.45);
+  letter-spacing: 0.05em;
+}
+
+/* ── Skeleton icon tile ───────────────────────────────────── */
+.skeletonIcon {
+  width: 56px;
+  height: 70px;   /* matches icon (56px) + name label (~14px) + gap */
+  border-radius: var(--radius-sm);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 77, 0, 0.05) 25%,
+    rgba(255, 77, 0, 0.11) 50%,
+    rgba(255, 77, 0, 0.05) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.6s ease infinite;
+}
+
+@media (max-width: 480px) {
+  .wrapper {
+    padding: var(--space-4) var(--space-3);
+  }
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(58px, 1fr));
+    gap: var(--space-1);
+  }
+}

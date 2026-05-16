@@ -1,0 +1,114 @@
+.section {
+  margin-bottom: var(--space-12);
+}
+
+.sectionTitle {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  margin-bottom: var(--space-4);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.sectionTitle::before,
+.sectionTitle::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(255, 77, 0, 0.25),
+    transparent
+  );
+}
+
+/* ── Role filters ──────────────────────── */
+.roleFilters {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-4);
+}
+
+.roleBtn {
+  font-family: var(--font-display);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 3px;
+  border: 1px solid rgba(255, 77, 0, 0.2);
+  background: rgba(255, 77, 0, 0.05);
+  color: var(--color-text-dim);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.roleBtn:hover {
+  background: rgba(255, 77, 0, 0.12);
+  color: var(--color-gold);
+  border-color: rgba(255, 77, 0, 0.4);
+}
+
+.roleBtnActive {
+  background: rgba(255, 77, 0, 0.18);
+  color: var(--color-gold);
+  border-color: rgba(255, 77, 0, 0.5);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* ── Error / Empty ─────────────────────── */
+.errorMsg {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  background: rgba(224, 82, 82, 0.08);
+  border: 1px solid rgba(224, 82, 82, 0.22);
+  border-radius: var(--radius-md);
+  color: #f87171;
+  font-size: 0.84rem;
+}
+
+.empty {
+  padding: var(--space-5);
+  text-align: center;
+  color: var(--color-text-dim);
+  font-size: 0.84rem;
+  background: var(--surface-1);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-md);
+}
+
+/* ── Skeletons ─────────────────────────── */
+.skeletons {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.skeletonCard {
+  height: 76px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 77, 0, 0.05) 25%,
+    rgba(255, 77, 0, 0.1)  50%,
+    rgba(255, 77, 0, 0.05) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease infinite;
+  border-radius: var(--radius-md);
+  border-left: 3px solid rgba(255, 77, 0, 0.15);
+}

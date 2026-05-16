@@ -1,0 +1,195 @@
+/* ============================================
+   GOOGLE FONTS
+   ============================================ */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+
+/* ============================================
+   DESIGN TOKENS
+   ============================================ */
+:root {
+  /* Brand palette */
+  --color-dark-cyan:  #ff4d00;
+  --color-cerulean:   #ff4000;
+  --color-dark-teal:  #999696;
+  --color-black:      #131313;
+  --color-dust-grey:  #f9f9f9;
+
+  /* Semantic colors */
+  --color-win:        #2da05a;
+  --color-loss:       #e05252;
+  --color-remake:     #4a5568;
+  --color-gold:       #ff4d00;   /* alias → dark-cyan, retrocompat */
+  --color-gold-light: #f9f9f9;
+  --color-text:       #f9f9f9;
+  --color-text-dim:   #999696;
+
+  /* Surfaces */
+  --surface-0:      rgba(19, 19, 19, 0.98);
+  --surface-1:      rgba(153, 150, 150, 0.22);
+  --surface-2:      rgba(255, 64, 0, 0.14);
+  --surface-border: rgba(255, 77, 0, 0.14);
+
+  /* Typography */
+  --font-display: 'Inter', system-ui, sans-serif;
+  --font-body:    'Inter', system-ui, sans-serif;
+  --font-mono:    'Space Mono', 'Courier New', monospace;
+
+  /* Spacing */
+  --space-1:   4px;
+  --space-2:   8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* Radii */
+  --radius-sm:  4px;
+  --radius-md:  8px;
+  --radius-lg: 16px;
+
+  /* Animation timing */
+  --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);   /* easeOutQuint — fast start, silky end */
+  --ease-out:    cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in:     cubic-bezier(0.55, 0, 1, 0.45);
+  --ease-bounce: cubic-bezier(0.34, 1.4, 0.64, 1); /* subtle bounce */
+
+  /* Z-index layers */
+  --z-bg:       -1;
+  --z-grid:      1;
+  --z-detail:    2;
+  --z-overlay: 10;
+  --z-tooltip: 100;
+}
+
+/* ============================================
+   RESET & BASE
+   ============================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--color-text);
+  background: var(--color-black);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font: inherit;
+  color: inherit;
+}
+
+input {
+  font: inherit;
+  color: inherit;
+}
+
+/* ============================================
+   SCROLLBAR
+   ============================================ */
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-black);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-dark-teal);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-cerulean);
+}
+
+/* ============================================
+   KEYFRAME ANIMATIONS
+   ============================================ */
+
+/* Animated gradient background */
+@keyframes gradientShift {
+  0%   { background-position: 0%   50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0%   50%; }
+}
+
+/* Particle float — ascending particles */
+@keyframes particleFloat {
+  0% {
+    transform: translateY(110vh) translateX(0) rotate(0deg);
+    opacity: 0;
+  }
+  5%  { opacity: 0.45; }
+  95% { opacity: 0.15; }
+  100% {
+    transform: translateY(-10vh) translateX(40px) rotate(540deg);
+    opacity: 0;
+  }
+}
+
+/* Glow pulse on champion icon hover */
+@keyframes glowPulse {
+  0%, 100% {
+    box-shadow:
+      0 0  8px var(--color-dark-cyan),
+      0 0 16px rgba(255, 77, 0, 0.3);
+  }
+  50% {
+    box-shadow:
+      0 0 20px var(--color-dark-cyan),
+      0 0 40px rgba(255, 77, 0, 0.5),
+      0 0 60px rgba(255, 64, 0, 0.2);
+  }
+}
+
+/* Win rate bar fill */
+@keyframes barFill {
+  from { width: 0%; }
+  to   { width: var(--target-width, 50%); }
+}
+
+/* Shimmer on skeleton elements */
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+
+/* Ambient breath */
+@keyframes ambientBreath {
+  0%, 100% { opacity: 0.4; }
+  50%       { opacity: 0.8; }
+}
+
+/* Scanline effect */
+@keyframes scanline {
+  0%   { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+/* Fade slide up */
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

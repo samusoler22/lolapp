@@ -1,0 +1,112 @@
+/* ── Hero variant ───────────────────────── */
+.heroWrap {
+  /* flex: 1 1 0 fills remaining heroCenter height after skinSelector */
+  position: relative;
+  flex: 1 1 0;
+  min-height: 0;
+  width: 100%;
+}
+
+/* model-viewer fills heroWrap absolutely so percentage height works */
+.heroViewer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  transition: opacity 0.45s ease;
+}
+
+/* ── Showcase variant ───────────────────── */
+.section {
+  margin: var(--space-8) 0;
+  border: 1px solid rgba(255, 77, 0, 0.2);
+  border-radius: 12px;
+  background: rgba(6, 6, 8, 0.75);
+  overflow: hidden;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-6);
+  border-bottom: 1px solid rgba(255, 77, 0, 0.12);
+}
+
+.label {
+  font-family: var(--font-display);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+}
+
+.skinName {
+  font-family: var(--font-display);
+  font-size: 0.68rem;
+  color: var(--color-text-dim);
+  letter-spacing: 0.05em;
+}
+
+.skinName::before {
+  content: '—';
+  margin-right: var(--space-2);
+  opacity: 0.4;
+}
+
+/* ── Stage: the 3D viewport ─────────────── */
+.stage {
+  position: relative;
+  height: 520px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loader {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  color: var(--color-text-dim);
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  pointer-events: none;
+}
+
+.spinner {
+  width: 28px;
+  height: 28px;
+  border: 2px solid rgba(255, 77, 0, 0.18);
+  border-top-color: var(--color-gold);
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* model-viewer fills the entire stage */
+.viewer {
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  transition: opacity 0.45s ease;
+}
+
+.hint {
+  margin: 0;
+  padding: var(--space-2) 0 var(--space-3);
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: 0.62rem;
+  letter-spacing: 0.09em;
+  color: rgba(232, 213, 163, 0.28);
+}
